@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AniQuiz API - Free Anime Quiz REST API</title>
+  <meta name="description" content="Free REST API for Auto-generated Anime Quiz Questions" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #4a4e69;
+      --secondary: #9a8c98;
+      --accent: #c9ada7;
+      --light: #f2e9e4;
+      --dark: #22223b;
+      --highlight: #4cc9f0;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+      color: #333; line-height: 1.6;
+      min-height: 100vh; display: flex; flex-direction: column;
+    }
+    .container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+    header {
+      background: var(--dark); color: white;
+      padding: 1rem 0; box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      position: sticky; top: 0; z-index: 100;
+    }
+    .header-content { display: flex; justify-content: space-between; align-items: center; }
+    .logo { display: flex; align-items: center; gap: 12px; }
+    .logo-icon { font-size: 2rem; color: var(--highlight); }
+    .logo h1 { font-size: 1.8rem; font-weight: 700; }
+    .logo span { color: var(--highlight); }
+    nav ul { display: flex; list-style: none; gap: 2rem; }
+    nav a {
+      color: var(--light); text-decoration: none; font-weight: 500;
+      transition: color 0.3s; padding: 8px 0; position: relative;
+    }
+    nav a:hover { color: var(--highlight); }
+    nav a::after {
+      content: ''; position: absolute; bottom: 0; left: 0;
+      width: 0; height: 2px; background: var(--highlight);
+      transition: width 0.3s;
+    }
+    nav a:hover::after { width: 100%; }
+    .hero {
+      background: linear-gradient(rgba(34,34,59,0.9),rgba(34,34,59,0.8)),
+      url('https://i.ibb.co/nN3SYQbM/file-59.jpg');
+      background-size: cover; background-position: center;
+      color: white; padding: 5rem 0; text-align: center;
+    }
+    .hero h2 { font-size: 3rem; margin-bottom: 1rem; line-height: 1.2; }
+    .hero p { font-size: 1.2rem; margin-bottom: 2rem; opacity: 0.9; }
+    .cta-button {
+      display: inline-block; background: var(--highlight);
+      color: var(--dark); padding: 12px 30px; border-radius: 50px;
+      text-decoration: none; font-weight: 600; font-size: 1.1rem;
+      transition: all 0.3s; box-shadow: 0 4px 15px rgba(76,201,240,0.4);
+    }
+    .cta-button:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(76,201,240,0.6); }
+    .features { padding: 5rem 0; }
+    .section-title { text-align: center; margin-bottom: 3rem; }
+    .section-title h2 { font-size: 2.5rem; color: var(--dark); margin-bottom: 1rem; }
+    .section-title p { color: var(--secondary); max-width: 600px; margin: 0 auto; }
+    .features-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(300px,1fr)); gap: 2rem;
+    }
+    .feature-card {
+      background: white; border-radius: 12px; padding: 2rem;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .feature-card:hover { transform: translateY(-10px); box-shadow: 0 12px 30px rgba(0,0,0,0.1); }
+    .feature-icon { font-size: 2.5rem; color: var(--highlight); margin-bottom: 1.5rem; }
+    .feature-card h3 { font-size: 1.5rem; margin-bottom: 1rem; color: var(--dark); }
+    .documentation { background: var(--light); padding: 5rem 0; }
+    .endpoint {
+      background: white; border-radius: 12px; padding: 2rem;
+      margin-bottom: 2rem; box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    }
+    .endpoint-header { display: flex; align-items: center; margin-bottom: 1.5rem; }
+    .method { display: inline-block; padding: 6px 12px; border-radius: 4px; font-weight: 600; margin-right: 1rem; }
+    .get { background: #e6f7ff; color: #1890ff; }
+    .post { background: #f6ffed; color: #52c41a; }
+    .endpoint-url {
+      font-family: monospace; background: #f8f9fa; padding: 10px 15px;
+      border-radius: 4px; border-left: 4px solid var(--highlight);
+      margin: 1.5rem 0; overflow-x: auto;
+    }
+    .code-block {
+      background: #2d2d2d; color: #f8f8f2; padding: 1.5rem;
+      border-radius: 8px; margin: 1.5rem 0; overflow-x: auto;
+      font-family: 'Courier New', monospace; font-size: 0.95rem;
+    }
+    .code-block code { display: block; line-height: 1.6; }
+    .json-key { color: #f92672; } .json-string { color: #a6e22e; } .json-number { color: #ae81ff; }
+    footer { background: var(--dark); color: var(--light); padding: 4rem 0 2rem; margin-top: auto; }
+    .footer-content {
+      display: grid; grid-template-columns: repeat(auto-fit,minmax(250px,1fr)); gap: 3rem;
+      margin-bottom: 3rem;
+    }
+    .footer-logo { display: flex; align-items: center; gap: 12px; margin-bottom: 1.5rem; }
+    .footer-logo .logo-icon { font-size: 2rem; color: var(--highlight); }
+    .footer-logo h3 { font-size: 1.8rem; font-weight: 700; }
+    .footer-logo span { color: var(--highlight); }
+    .footer-about p { opacity: 0.8; margin-bottom: 1.5rem; line-height: 1.8; }
+    .social-links { display: flex; gap: 1rem; }
+    .social-link {
+      display: flex; align-items: center; justify-content: center;
+      width: 40px; height: 40px; border-radius: 50%;
+      background: rgba(255,255,255,0.1); color: white; text-decoration: none;
+      transition: all 0.3s;
+    }
+    .social-link:hover { background: var(--highlight); transform: translateY(-3px); }
+    .footer-links h4 { font-size: 1.3rem; margin-bottom: 1.5rem; position: relative; padding-bottom: 10px; }
+    .footer-links h4::after { content: ''; position: absolute; bottom: 0; left: 0; width: 50px; height: 3px; background: var(--highlight); }
+    .footer-links ul { list-style: none; } .footer-links li { margin-bottom: 0.8rem; }
+    .footer-links a { color: var(--light); text-decoration: none; opacity: 0.8; transition: all 0.3s; display: inline-block; }
+    .footer-links a:hover { opacity: 1; color: var(--highlight); transform: translateX(5px); }
+    .copyright { text-align: center; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.1); font-size: 0.9rem; opacity: 0.7; }
+    @media (max-width: 768px) {
+      .header-content { flex-direction: column; gap: 1rem; }
+      nav ul { gap: 1.2rem; }
+      .hero h2 { font-size: 2.2rem; }
+      .section-title h2 { font-size: 2rem; }
+      .footer-content { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 480px) {
+      nav ul { flex-wrap: wrap; justify-content: center; }
+      .hero { padding: 3rem 0; }
+      .hero h2 { font-size: 1.8rem; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="container">
+      <div class="header-content">
+        <div class="logo"><div class="logo-icon"><i class="fas fa-question-circle"></i></div><h1>Ani<span>Quiz</span>API</h1></div>
+        <nav><ul>
+          <li><a href="#features">Features</a></li>
+          <li><a href="#documentation">Documentation</a></li>
+          <li><a href="#github">GitHub</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul></nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <h2>Free REST API for Auto-Generated Anime Quiz</h2>
+        <p>Get random trivia, image-based, and quote quizzes with smart difficulty and advanced error handling.</p>
+        <a href="#documentation" class="cta-button">Explore Endpoints</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section id="features" class="features">
+    <div class="container">
+      <div class="section-title"><h2>Key Features</h2><p>Perfect for developers building anime trivia apps</p></div>
+      <div class="features-grid">
+        <div class="feature-card"><div class="feature-icon">🎲</div><h3>Multiple Quiz Types</h3><p>Text trivia, image quizzes, and quote challenges.</p></div>
+        <div class="feature-card"><div class="feature-icon">🏷️</div><h3>Difficulty Tags</h3><p>Easy, Medium, Hard — or mix for a smart challenge.</p></div>
+        <div class="feature-card"><div class="feature-icon">⚙️</div><h3>Smart Error Handling</h3><p>Consistent validation and fallback for uninterrupted service.</p></div>
+        <div class="feature-card"><div class="feature-icon">💧</div><h3>Watermarked Responses</h3><p>Every response includes creator info &amp; IST timestamp.</p></div>
+        <div class="feature-card"><div class="feature-icon">🔄</div><h3>/api/random</h3><p>Mix of trivia and quote for a surprise quiz.</p></div>
+        <div class="feature-card"><div class="feature-icon">🚀</div><h3>Easy Integration</h3><p>Simple GET endpoints, ready for front-end or bot use.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Documentation Section -->
+  <section id="documentation" class="documentation">
+    <div class="container">
+      <div class="section-title"><h2>API Documentation</h2><p>Clear endpoints with examples</p></div>
+
+      <div class="endpoint">
+        <div class="endpoint-header"><span class="method get">GET</span><h3>/api/quiz?difficulty=hard</h3></div>
+        <p>Fetch a multiple-choice trivia question.</p>
+        <div class="endpoint-url">https://aniquiz.vercel.app/api/quiz?difficulty=hard</div>
+        <h4>Example Response:</h4>
+        <div class="code-block"><code>{<br>&nbsp;&nbsp;<span class="json-key">"data"</span>: {<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="json-key">"question"</span>: <span class="json-string">"Which anime features the phrase 'Bankai!'?"</span>,<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="json-key">"options"</span>: ["Naruto","Bleach","One Piece","Attack on Titan"],<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="json-key">"correct"</span>: <span class="json-string">"Bleach"</span>,<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="json-key">"difficulty"</span>: <span class="json-string">"hard"</span><br>&nbsp;&nbsp;},<br>&nbsp;&nbsp;<span class="json-key">"creator"</span>: <span class="json-string">"Shinei Nouzen"</span>,<br>&nbsp;&nbsp;<span class="json-key">"timestamp"</span>: <span class="json-string">"August 2, 2025, 10:30 AM"</span><br>}</code></div>
+      </div>
+
+      <div class="endpoint">
+        <div class="endpoint-header"><span class="method get">GET</span><h3>/api/image-quiz</h3></div>
+        <p>Get a quiz asking to identify a random anime character image.</p>
+        <div class="endpoint-url">https://aniquiz.vercel.app/api/image-quiz</div>
+      </div>
+
+      <div class="endpoint">
+        <div class="endpoint-header"><span class="method get">GET</span><h3>/api/quote-quiz</h3></div>
+        <p>Guess who said the random anime quote.</p>
+        <div class="endpoint-url">https://aniquiz.vercel.app/api/quote-quiz</div>
+      </div>
+
+      <div class="endpoint">
+        <div class="endpoint-header"><span class="method get">GET</span><h3>/api/random</h3></div>
+        <p>Receive a mixed trivia & quote quiz.</p>
+        <div class="endpoint-url">https://aniquiz.vercel.app/api/random</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GitHub Section -->
+  <section id="github" class="features" style="background: var(--light);">
+    <div class="container">
+      <div class="section-title"><h2>Open Source & Community</h2><p>Contribute on GitHub</p></div>
+      <div style="text-align:center; max-width:800px; margin:0 auto;">
+        <div style="font-size:4rem; margin-bottom:1.5rem;">👨‍💻</div>
+        <h3 style="font-size:2rem; margin-bottom:1.5rem;">GitHub Repository</h3>
+        <p style="margin-bottom:2rem; font-size:1.1rem;">AniQuiz API is fully open-source. Star, fork, or open an issue on GitHub!</p>
+        <a href="https://github.com/Shineii86/AniQuizAPI" target="_blank" class="cta-button" style="background:#333; color:white;"><i class="fab fa-github"></i> Shineii86/AniQuizAPI</a>
+        <p style="margin-top:2rem; font-style:italic; opacity:0.8;">Build with ❤️ by Shinei Nouzen</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer id="contact">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-about">
+          <div class="footer-logo"><div class="logo-icon">❓</div><h3>Ani<span>Quiz</span>API</h3></div>
+          <p style="opacity:0.8; line-height:1.8;">A free, open-source anime quiz REST API delivering trivia, image, and quote quizzes with smart features and watermarking.</p>
+          <div class="social-links">
+            <a href="https://github.com/Shineii86" class="social-link" target="_blank"><i class="fab fa-github"></i></a>
+            <a href="https://telegram.me/Shineii86" class="social-link" target="_blank"><i class="fab fa-telegram"></i></a>
+          </div>
+        </div>
+        <div class="footer-links"><h4>Quick Links</h4><ul><li><a href="#features">Features</a></li><li><a href="#documentation">Documentation</a></li><li><a href="#github">GitHub</a></li></ul></div>
+        <div class="footer-links">
+          <h4>Legal</h4>
+          <ul><li><a href="https://github.com/AniPulse/ToS">Terms of Service</a></li>
+            <li><a href="https://github.com/AniPulse/Privacy">Privacy Policy</a></li></ul>
+        </div>
+      </div>
+      <div class="copyright">
+        <p>Copyright © 2025 Shinei Nouzen, All rights reserved</p>
+        <p style="margin-top:10px;"><small>Page rendered in: <span id="timestamp"></span> IST</small></p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById("timestamp").textContent = new Date().toLocaleString("en-IN", {
+      timeZone: "Asia/Kolkata",
+      hour12: true,
+      year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit'
+    });
+  </script>
+</body>
+</html>
