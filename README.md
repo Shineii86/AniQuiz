@@ -1,6 +1,6 @@
 <div align="center">
 
-# [AniQuiz API](https://github.com/AniPulse)
+# [AniQuizAPI](https://github.com/AniPulse)
 
 **The Ultimate Smart Anime Quiz REST API**  
 Auto-generated trivia questions — by difficulty, image, quote, or random — with robust error handling and personalized watermark in every response.
