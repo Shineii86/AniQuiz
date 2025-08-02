@@ -5,6 +5,14 @@
 **The Ultimate Smart Anime Quiz REST API**  
 Auto-generated trivia questions — by difficulty, image, quote, or random — with robust error handling and personalized watermark in every response.
 
+![Vercel](https://img.shields.io/badge/Deployed-Vercel-black?style=flat&logo=vercel)
+![Issues](https://img.shields.io/github/issues/Shineii86/AniQuizAPI)
+![License](https://img.shields.io/badge/License-MIT-brightgreen.svg)
+
+![Last Commit](https://img.shields.io/github/last-commit/Shineii86/AniQuizAPI?style=for-the-badge)
+![Repo Size](https://img.shields.io/github/repo-size/Shineii86/AniQuizAPI?style=for-the-badge) [![GitHub Stars](https://img.shields.io/github/stars/Shineii86/AniQuizAPI?style=for-the-badge)](https://github.com/Shineii86/AniQuizAPI/stargazers) [![GitHub Forks](https://img.shields.io/github/forks/Shineii86/AniQuizAPI?style=for-the-badge)](https://github.com/Shineii86/AniQuizAPI/fork)
+[![API Status](https://img.shields.io/website?down_color=lightgrey&down_message=offline&label=API%20Status&style=for-the-badge&up_color=green&up_message=online&url=https%3A%2F%2Faniquiz.vercel.app)](https://aniquiz.vercel.app)
+
 
 </div>
 
